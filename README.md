@@ -1,33 +1,35 @@
-# a11y_assessments
+# 🥃 Premium Spirits - E-Commerce App
 
-This app is used for internal testing.
+A beautifully designed mobile application built with Flutter for browsing and purchasing premium alcoholic beverages, such as aged single malt scotch and fine wines. 
 
-## Release a new version for Android
+This repository represents the **Milestone 1 (MVP UI layout)** for the Final Capstone Project.
 
-pre-requisite: This can and should only be done by a googler and you must also
-be in the flutter.dev play console account.
+## 🎯 Milestone 1 Requirements Fulfilled
 
-1. Follow https://docs.flutter.dev/deployment/android to create a keystore file if you don't already
-have one.
+This project fully implements the Weeks 1–5 curriculum requirements:
 
-2. Bump the pubspec.yaml version
+- [x] **Main Discovery/Feed Screen (`feed_screen.dart`):** 
+  - Implements `Column` and `Row` for structural layout.
+  - Utilizes custom `Card` widgets to display featured collections and products.
+- [x] **Adaptive Item Detail Screen (`product_detail_screen.dart`):** 
+  - Uses `Stack` to overlay a bookmark badge on top of the product cover image.
+  - Arranges product title, star rating, price, and category tags using `Row` and `Wrap`.
+  - Includes a bottom sticky action bar with an "Add to Cart" button occupying full width via `Expanded`.
+- [x] **Working Interactivity (StatefulWidget):** 
+  - The Item Detail Screen is a `StatefulWidget`.
+  - The Favorite/Bookmark icon toggle is fully interactive and updates the UI state using `setState()`.
+- [x] **Responsive & Error-Free Layout:** 
+  - Implemented `SingleChildScrollView` alongside `Expanded` to ensure **zero RenderFlex overflow** across both small and large device screens.
+- [x] **Code Cleanliness & Architecture:** 
+  - Code is strictly separated into logical directories (`lib/screens` and `lib/widgets`).
 
-3. Create a key.properties file in `android/` directory following this format.
-```
-storePassword=<password>
-keyPassword=<password>
-keyAlias=upload
-storeFile=<keystore path>
-```
+## 📂 Folder Architecture
 
-4. Run `flutter build appbundle` and upload the artifact to play console
-
-## Release a new version for iOS
-
-pre-requisite: This can and should only be done by a googler and you must also
-be in the FLUTTER.IO LLC developer account with iOS distribution permission.
-
-1. Bump the pubspec.yaml version
-2. Run `flutter build ipa` and upload the artifact to app store using transporter or other tools.
-For more information, see https://docs.flutter.dev/deployment/ios.
-3. Once the app is in TestFlight, add appropriate testers to the app so they can start testing.
+```text
+lib/
+├── main.dart
+├── screens/
+│   ├── feed_screen.dart           # Discovery screen with product list
+│   └── product_detail_screen.dart # Detailed product view with interactivity
+└── widgets/
+    └── product_card.dart          # Reusable UI component for the feed
