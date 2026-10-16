@@ -5,7 +5,7 @@ class ProductCard extends StatelessWidget {
   final String category;
   final String price;
   final String rating;
-  final IconData icon;
+  final String imageUrl;
   final VoidCallback onTap;
 
   const ProductCard({
@@ -14,7 +14,7 @@ class ProductCard extends StatelessWidget {
     required this.category,
     required this.price,
     required this.rating,
-    required this.icon,
+    required this.imageUrl,
     required this.onTap,
   });
 
@@ -29,14 +29,23 @@ class ProductCard extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Row(
             children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1E1E1E),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    imageUrl,
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      width: 80,
+                      height: 80,
+                      color: Colors.grey[200],
+                      child: const Icon(Icons.inventory_2_outlined, color: Colors.grey, size: 30),
+                    ),
+                  ),
                 ),
-                child: Icon(icon, color: Colors.amber, size: 40),
               ),
               const SizedBox(width: 16),
               Expanded(
