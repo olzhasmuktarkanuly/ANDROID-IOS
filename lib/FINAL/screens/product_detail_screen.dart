@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../models/product.dart';
+import '../theme/app_theme.dart';
+import '../widgets/category_tag.dart';
+import '../widgets/product_image.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
@@ -10,30 +13,31 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-
-  bool get isFavorite => favoriteProductsNotifier.value.any((p) => p.id == widget.product.id);
+  bool get isFavorite =>
+      favoriteProductsNotifier.value.any((p) => p.id == widget.product.id);
 
   void toggleFavorite() {
-    final currentFavorites = List<Product>.from(favoriteProductsNotifier.value);
+    final current = List<Product>.from(favoriteProductsNotifier.value);
     if (isFavorite) {
-      currentFavorites.removeWhere((p) => p.id == widget.product.id);
+      current.removeWhere((p) => p.id == widget.product.id);
     } else {
-      currentFavorites.add(widget.product);
+      current.add(widget.product);
     }
-    favoriteProductsNotifier.value = currentFavorites;
+    favoriteProductsNotifier.value = current;
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    final product = widget.product;
+    const radius = BorderRadius.only(
+      bottomLeft: Radius.circular(30),
+      bottomRight: Radius.circular(30),
+    );
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9F9),
       appBar: AppBar(
-        title: Text(widget.product.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        foregroundColor: Colors.black,
-        centerTitle: true,
+        title: Text(product.title, style: const TextStyle(fontSize: 16)),
       ),
       body: SafeArea(
         child: Column(
@@ -45,28 +49,32 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   children: [
                     Stack(
                       children: [
-                        Container(
+                        SizedBox(
                           width: double.infinity,
-                          height: 350,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF1E1E1E),
-                            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
-                          ),
+                          height: 340,
                           child: ClipRRect(
-                            borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
-                            child: Image.network(
-                              widget.product.imageUrl,
-                              fit: BoxFit.cover,
-                            ),
+                            borderRadius: radius,
+                            child: ProductImage(product: product, iconSize: 90),
                           ),
                         ),
                         Positioned(
-                          top: 16, right: 16,
+                          top: 16,
+                          right: 16,
                           child: Container(
-                            decoration: BoxDecoration(color: Colors.white.withOpacity(0.9), shape: BoxShape.circle),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.92),
+                              shape: BoxShape.circle,
+                            ),
                             child: IconButton(
-                              icon: Icon(isFavorite ? Icons.bookmark : Icons.bookmark_border),
-                              color: isFavorite ? const Color(0xFF8B0000) : Colors.black,
+                              tooltip: isFavorite
+                                  ? 'Remove from favorites'
+                                  : 'Save to favorites',
+                              icon: Icon(isFavorite
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_border),
+                              color: isFavorite
+                                  ? AppColors.burgundy
+                                  : AppColors.ink,
                               onPressed: toggleFavorite,
                             ),
                           ),
@@ -74,29 +82,69 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.all(20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(widget.product.title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                          Row(
+                            children: [
+                              CategoryTag(text: product.category),
+                              const SizedBox(width: 10),
+                              const Icon(Icons.star_rounded,
+                                  color: Color(0xFFF5A623), size: 20),
+                              const SizedBox(width: 2),
+                              Text(
+                                product.rating,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w700, fontSize: 15),
+                              ),
+                              if (product.isNew) ...[
+                                const SizedBox(width: 10),
+                                const NewBadge(),
+                              ],
+                            ],
+                          ),
+                          const SizedBox(height: 14),
+                          Text(
+                            product.title,
+                            style: const TextStyle(
+                                fontSize: 26, fontWeight: FontWeight.w800),
+                          ),
                           const SizedBox(height: 8),
-                          Text(widget.product.price, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: Color(0xFF8B0000))),
-                          const SizedBox(height: 16),
-                          Text(widget.product.description, style: const TextStyle(fontSize: 16, color: Colors.black87, height: 1.5)),
-                          const SizedBox(height: 30),
+                          Text(
+                            product.price,
+                            style: const TextStyle(
+                              fontSize: 26,
+                              fontWeight: FontWeight.w900,
+                              color: AppColors.burgundy,
+                            ),
+                          ),
+                          const SizedBox(height: 18),
+                          Text(
+                            product.description,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                              height: 1.55,
+                            ),
+                          ),
+                          const SizedBox(height: 28),
                           Center(
                             child: OutlinedButton.icon(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: const Icon(Icons.arrow_back, color: Colors.black),
-                              label: const Text('Go Back to Feed', style: TextStyle(color: Colors.black)),
+                              onPressed: () => Navigator.pop(context),
+                              icon: const Icon(Icons.arrow_back),
+                              label: const Text('Go Back to Feed'),
                               style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                                side: const BorderSide(color: Colors.black),
+                                foregroundColor: AppColors.ink,
+                                side: const BorderSide(color: AppColors.ink),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 12),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),

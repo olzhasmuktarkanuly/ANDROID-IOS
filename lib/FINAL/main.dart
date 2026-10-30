@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
-import 'screens/feed_screen.dart';
 import 'screens/root_screen.dart';
+import 'theme/app_theme.dart';
+import 'dart:ui' show PointerDeviceKind;
 
 void main() {
   runApp(const LuxeParfumsApp());
+}
+class AppScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+    PointerDeviceKind.trackpad,
+    PointerDeviceKind.stylus,
+  };
 }
 
 class LuxeParfumsApp extends StatelessWidget {
@@ -14,10 +24,8 @@ class LuxeParfumsApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Luxe Parfums',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: const Color(0xFFF9F9F9),
-      ),
+      theme: AppTheme.light,
+      scrollBehavior: AppScrollBehavior(),
       home: const RootScreen(),
     );
   }
