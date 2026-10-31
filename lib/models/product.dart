@@ -8,6 +8,7 @@ class Product {
   final String rating;
   final String description;
   final String imageUrl;
+  final bool isNew;
 
   Product({
     required this.id,
@@ -17,6 +18,7 @@ class Product {
     required this.rating,
     required this.description,
     required this.imageUrl,
+    this.isNew = false,
   });
 }
 
