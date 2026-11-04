@@ -7,6 +7,7 @@ class EmptyState extends StatelessWidget {
   final String message;
   final String? buttonLabel;
   final VoidCallback? onPressed;
+  final IconData buttonIcon;
 
   const EmptyState({
     super.key,
@@ -15,6 +16,7 @@ class EmptyState extends StatelessWidget {
     required this.message,
     this.buttonLabel,
     this.onPressed,
+    this.buttonIcon = Icons.restart_alt_rounded,
   });
 
   @override
@@ -39,7 +41,7 @@ class EmptyState extends StatelessWidget {
               title,
               style: const TextStyle(
                 fontSize: 22,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
                 color: AppColors.ink,
               ),
             ),
@@ -57,7 +59,7 @@ class EmptyState extends StatelessWidget {
               const SizedBox(height: 28),
               FilledButton.icon(
                 onPressed: onPressed,
-                icon: const Icon(Icons.restart_alt_rounded),
+                icon: Icon(buttonIcon),
                 label: Text(buttonLabel!),
                 style: FilledButton.styleFrom(
                   padding:
