@@ -8,7 +8,7 @@ List<Product> buildSeedProducts() => [
         price: '\$395.00',
         rating: '4.9',
         imageUrl:
-            'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=500&q=80',
+            'https://avatars.mds.yandex.net/i?id=c7b5cf0ddc1f157ce72ac741d3f21f108165e844-5285663-images-thumbs&n=13',
         description:
             'A rare, exotic, and distinctive fragrance featuring classic woods and the iconic Tom Ford oud. Features rich notes of rose wood and cardamom.',
       ),
@@ -40,7 +40,7 @@ List<Product> buildSeedProducts() => [
         category: 'Eau de Parfum',
         price: '\$150.00',
         rating: '4.6',
-        imageUrl: '',
+        imageUrl: 'https://avatars.mds.yandex.net/get-mpic/16217302/img_id6250155849147503854.jpeg/orig',
         description:
             'An oriental, fresh and sensual fragrance with notes of orange, jasmine, rose and patchouli.',
       ),
@@ -50,7 +50,7 @@ List<Product> buildSeedProducts() => [
         category: 'Eau de Parfum',
         price: '\$135.00',
         rating: '4.5',
-        imageUrl: '',
+        imageUrl: 'https://avatars.mds.yandex.net/i?id=f14d18e3aaea50bb62ee0475b53ca60834409c83-5617347-images-thumbs&n=13',
         description:
             'An addictive gourmand floral with black coffee, white flowers and a sweet vanilla trail.',
       ),
@@ -60,7 +60,7 @@ List<Product> buildSeedProducts() => [
         category: 'Eau de Toilette',
         price: '\$120.00',
         rating: '4.6',
-        imageUrl: '',
+        imageUrl: 'https://avatars.mds.yandex.net/i?id=62a044c79da10b3bbe9d752e40b39a74_l-3530254-images-thumbs&n=13',
         description:
             'A mineral woody fragrance built around orange, flint and vetiver. Earthy, bold and timeless.',
       ),
@@ -70,7 +70,7 @@ List<Product> buildSeedProducts() => [
         category: 'Eau de Parfum',
         price: '\$310.00',
         rating: '4.7',
-        imageUrl: '',
+        imageUrl: 'https://allureparfum.ru/upload/iblock/05d/05d2cc6008405f130c7548560c951d99.jpg',
         description:
             'A warm amber evening fragrance with benzoin, labdanum and tonka bean.',
       ),
@@ -80,7 +80,7 @@ List<Product> buildSeedProducts() => [
         category: 'Parfum',
         price: '\$180.00',
         rating: '4.4',
-        imageUrl: '',
+        imageUrl: 'https://avatars.mds.yandex.net/get-mpic/20419546/2a0000019e3a7f208fb0ac4b5d4e97c5646c/orig',
         description:
             'The legendary oriental: bergamot, iris, vanilla and a smoky, sensual dry-down.',
       ),
@@ -90,7 +90,7 @@ List<Product> buildSeedProducts() => [
         category: 'Eau de Parfum',
         price: '\$145.00',
         rating: '4.5',
-        imageUrl: '',
+        imageUrl: 'https://cdn.spellsmell.ru/rc/98b0c735-eb4d-4498-853d-9202c2f6dd5d.jpg',
         description:
             'A luminous floral bouquet of ylang-ylang, damascus rose and jasmine.',
       ),
@@ -100,7 +100,7 @@ List<Product> buildSeedProducts() => [
         category: 'Parfum',
         price: '\$125.00',
         rating: '4.6',
-        imageUrl: '',
+        imageUrl: 'https://cdn.aroma-butik.ru/images/categories/goods_full/1538428060_25588_Giorgio_Armani_c.jpg',
         description:
             'A deep aquatic fragrance with marine notes, incense and patchouli.',
       ),

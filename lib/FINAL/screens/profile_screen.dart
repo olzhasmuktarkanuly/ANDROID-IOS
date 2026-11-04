@@ -28,7 +28,7 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 16),
             const Text(
               'Muktarkanuly Olzhas',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 6),
             const Text(

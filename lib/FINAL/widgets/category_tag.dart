@@ -42,7 +42,7 @@ class NewBadge extends StatelessWidget {
         'NEW',
         style: TextStyle(
           fontSize: 10,
-          fontWeight: FontWeight.w800,
+          fontWeight: FontWeight.w700,
           letterSpacing: 0.8,
           color: AppColors.ink,
         ),

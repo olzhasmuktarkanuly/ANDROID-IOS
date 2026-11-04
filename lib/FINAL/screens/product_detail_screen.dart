@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../models/product.dart';
+import '../../providers/cart_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/cart_badge_button.dart';
 import '../widgets/category_tag.dart';
 import '../widgets/product_image.dart';
 
@@ -30,6 +33,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final product = widget.product;
+    final inCart =
+        context.select<CartProvider, bool>((cart) => cart.contains(product.id));
     const radius = BorderRadius.only(
       bottomLeft: Radius.circular(30),
       bottomRight: Radius.circular(30),
@@ -38,6 +43,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(product.title, style: const TextStyle(fontSize: 16)),
+        actions: const [CartBadgeButton(), SizedBox(width: 6)],
       ),
       body: SafeArea(
         child: Column(
@@ -108,14 +114,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           Text(
                             product.title,
                             style: const TextStyle(
-                                fontSize: 26, fontWeight: FontWeight.w800),
+                                fontSize: 26, fontWeight: FontWeight.w700),
                           ),
                           const SizedBox(height: 8),
                           Text(
                             product.price,
                             style: const TextStyle(
                               fontSize: 26,
-                              fontWeight: FontWeight.w900,
+                              fontWeight: FontWeight.w700,
                               color: AppColors.burgundy,
                             ),
                           ),
@@ -129,6 +135,43 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             ),
                           ),
                           const SizedBox(height: 28),
+                          SizedBox(
+                            width: double.infinity,
+                            child: inCart
+                                ? OutlinedButton.icon(
+                                    onPressed: () => context
+                                        .read<CartProvider>()
+                                        .toggle(product),
+                                    icon: const Icon(Icons.check_rounded),
+                                    label: const Text('In Cart · Tap to remove'),
+                                    style: OutlinedButton.styleFrom(
+                                      foregroundColor: AppColors.burgundy,
+                                      side: const BorderSide(
+                                          color: AppColors.burgundy),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 14),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(14),
+                                      ),
+                                    ),
+                                  )
+                                : FilledButton.icon(
+                                    onPressed: () => context
+                                        .read<CartProvider>()
+                                        .toggle(product),
+                                    icon: const Icon(
+                                        Icons.add_shopping_cart_rounded),
+                                    label: const Text('Add to Cart'),
+                                    style: FilledButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 14),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(14),
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                          const SizedBox(height: 14),
                           Center(
                             child: OutlinedButton.icon(
                               onPressed: () => Navigator.pop(context),

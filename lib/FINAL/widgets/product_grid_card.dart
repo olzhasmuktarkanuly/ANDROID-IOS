@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/product.dart';
 import '../theme/app_theme.dart';
+import 'add_to_cart_button.dart';
 import 'category_tag.dart';
 import 'product_image.dart';
 
@@ -87,13 +88,22 @@ class ProductGridCard extends StatelessWidget {
                       const SizedBox(height: 6),
                       CategoryTag(text: product.category),
                       const SizedBox(height: 8),
-                      Text(
-                        product.price,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.burgundy,
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              product.price,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.burgundy,
+                              ),
+                            ),
+                          ),
+                          AddToCartButton(product: product, size: 32),
+                        ],
                       ),
                     ],
                   ),

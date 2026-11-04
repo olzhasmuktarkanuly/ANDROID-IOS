@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/product.dart';
 import '../theme/app_theme.dart';
+import 'add_to_cart_button.dart';
 import 'category_tag.dart';
 
 class ProductListTile extends StatelessWidget {
@@ -71,7 +72,7 @@ class ProductListTile extends StatelessWidget {
                     product.price,
                     style: const TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w700,
                       color: AppColors.burgundy,
                     ),
                   ),
@@ -91,6 +92,8 @@ class ProductListTile extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(width: 10),
+              AddToCartButton(product: product),
             ],
           ),
         ),

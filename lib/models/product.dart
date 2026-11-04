@@ -8,7 +8,11 @@ class Product {
   final String rating;
   final String description;
   final String imageUrl;
+
   final bool isNew;
+
+  double get priceValue =>
+      double.tryParse(price.replaceAll(RegExp(r'[^0-9.]'), '')) ?? 0;
 
   Product({
     required this.id,

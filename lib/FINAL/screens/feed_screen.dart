@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import '/models/product.dart';
-import '/models/product_seed.dart';
+import '../../models/product.dart';
+import '../../models/product_seed.dart';
 import '../theme/app_theme.dart';
+import '../widgets/cart_badge_button.dart';
 import '../widgets/delete_background.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/product_grid_card.dart';
 import '../widgets/product_list_tile.dart';
 import 'product_detail_screen.dart';
-
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -162,7 +162,7 @@ class _FeedScreenState extends State<FeedScreen> {
           const SizedBox(width: 4),
           const Flexible(
             child: Text(
-              '',
+              'Swipe to delete · pull to refresh',
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontSize: 12, color: AppColors.muted),
             ),
@@ -192,6 +192,9 @@ class _FeedScreenState extends State<FeedScreen> {
           ],
         ),
         actions: [
+          // LW9: корзина с живым бейджем
+          const CartBadgeButton(),
+          // Переключатель List <-> Grid
           IconButton(
             tooltip: _isGrid ? 'Show as list' : 'Show as grid',
             onPressed: () => setState(() => _isGrid = !_isGrid),
@@ -211,24 +214,24 @@ class _FeedScreenState extends State<FeedScreen> {
       body: SafeArea(
         child: _products.isEmpty
             ? EmptyState(
-          icon: Icons.inventory_2_outlined,
-          title: 'Catalog is Empty',
-          message:
-          'You have removed every fragrance.\nRestore the initial catalog to continue.',
-          buttonLabel: 'Reset Catalog',
-          onPressed: _resetCatalog,
-        )
+                icon: Icons.inventory_2_outlined,
+                title: 'Catalog is Empty',
+                message:
+                    'You have removed every fragrance.\nRestore the initial catalog to continue.',
+                buttonLabel: 'Reset Catalog',
+                onPressed: _resetCatalog,
+              )
             : Column(
-          children: [
-            _buildHeader(),
-            Expanded(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
-                child: _isGrid ? _buildGrid() : _buildList(),
+                children: [
+                  _buildHeader(),
+                  Expanded(
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 250),
+                      child: _isGrid ? _buildGrid() : _buildList(),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
