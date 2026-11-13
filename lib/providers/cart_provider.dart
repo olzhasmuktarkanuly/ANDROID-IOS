@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../models/product.dart';
 
-
 class CartProvider extends ChangeNotifier {
   final List<Product> _items = [];
 
@@ -10,7 +9,7 @@ class CartProvider extends ChangeNotifier {
   int get itemCount => _items.length;
 
   double get totalPrice =>
-      _items.fold<double>(0, (sum, p) => sum + p.priceValue);
+      _items.fold<double>(0, (sum, p) => sum + p.price);
 
   bool contains(String id) => _items.any((p) => p.id == id);
 

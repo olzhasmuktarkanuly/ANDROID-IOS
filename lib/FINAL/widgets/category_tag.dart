@@ -27,6 +27,7 @@ class CategoryTag extends StatelessWidget {
   }
 }
 
+/// Бейдж NEW для товаров, добавленных через Pull-to-Refresh.
 class NewBadge extends StatelessWidget {
   const NewBadge({super.key});
 

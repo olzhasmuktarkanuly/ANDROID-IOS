@@ -4,6 +4,7 @@ import '../../models/product.dart';
 import '../../providers/cart_provider.dart';
 import '../theme/app_theme.dart';
 
+/// Компактная круглая кнопка-переключатель "Add to Cart" (иконка корзина <-> галочка).
 class AddToCartButton extends StatelessWidget {
   final Product product;
   final double size;

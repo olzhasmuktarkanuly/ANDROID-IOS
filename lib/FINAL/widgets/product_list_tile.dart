@@ -60,7 +60,7 @@ class ProductListTile extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 6),
-                    CategoryTag(text: product.category),
+                    CategoryTag(text: product.categoryLabel),
                   ],
                 ),
               ),
@@ -69,7 +69,7 @@ class ProductListTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    product.price,
+                    product.priceLabel,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
@@ -84,7 +84,7 @@ class ProductListTile extends StatelessWidget {
                           color: Color(0xFFF5A623), size: 18),
                       const SizedBox(width: 2),
                       Text(
-                        product.rating,
+                        product.ratingLabel,
                         style: const TextStyle(
                             fontSize: 13, fontWeight: FontWeight.w600),
                       ),

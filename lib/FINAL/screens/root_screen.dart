@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'explore_screen.dart';
 import 'favorites_screen.dart';
 import 'feed_screen.dart';
 import 'profile_screen.dart';
@@ -15,6 +16,7 @@ class _RootScreenState extends State<RootScreen> {
 
   final List<Widget> _screens = const [
     FeedScreen(),
+    ExploreScreen(),
     FavoritesScreen(),
     ProfileScreen(),
   ];
@@ -28,9 +30,14 @@ class _RootScreenState extends State<RootScreen> {
         onDestinationSelected: (index) => setState(() => _currentIndex = index),
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.explore_outlined),
-            selectedIcon: Icon(Icons.explore),
+            icon: Icon(Icons.grid_view_outlined),
+            selectedIcon: Icon(Icons.grid_view_rounded),
             label: 'Feed',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.cloud_outlined),
+            selectedIcon: Icon(Icons.cloud),
+            label: 'Explore',
           ),
           NavigationDestination(
             icon: Icon(Icons.favorite_border),

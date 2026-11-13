@@ -58,7 +58,7 @@ class ProductGridCard extends StatelessWidget {
                                   color: Color(0xFFF5A623), size: 15),
                               const SizedBox(width: 2),
                               Text(
-                                product.rating,
+                                product.ratingLabel,
                                 style: const TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.w700),
                               ),
@@ -86,13 +86,13 @@ class ProductGridCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 6),
-                      CategoryTag(text: product.category),
+                      CategoryTag(text: product.categoryLabel),
                       const SizedBox(height: 8),
                       Row(
                         children: [
                           Expanded(
                             child: Text(
-                              product.price,
+                              product.priceLabel,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(

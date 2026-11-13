@@ -4,9 +4,17 @@ import '../theme/app_theme.dart';
 
 class ProductImage extends StatelessWidget {
   final Product product;
+  final String? url;
+  final BoxFit fit;
   final double iconSize;
 
-  const ProductImage({super.key, required this.product, this.iconSize = 44});
+  const ProductImage({
+    super.key,
+    required this.product,
+    this.url,
+    this.fit = BoxFit.cover,
+    this.iconSize = 44,
+  });
 
   Widget _placeholder() {
     return Container(
@@ -28,12 +36,13 @@ class ProductImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (product.imageUrl.isEmpty) return _placeholder();
+    final source = url ?? product.imageUrl;
+    if (source.isEmpty) return _placeholder();
     return Image.network(
-      product.imageUrl,
+      source,
       width: double.infinity,
       height: double.infinity,
-      fit: BoxFit.cover,
+      fit: fit,
       loadingBuilder: (context, child, progress) =>
           progress == null ? child : _placeholder(),
       errorBuilder: (context, error, stackTrace) => _placeholder(),

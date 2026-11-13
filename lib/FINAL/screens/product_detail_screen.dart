@@ -6,16 +6,28 @@ import '../theme/app_theme.dart';
 import '../widgets/cart_badge_button.dart';
 import '../widgets/category_tag.dart';
 import '../widgets/product_image.dart';
+import '../widgets/share_sheet.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
-  const ProductDetailScreen({super.key, required this.product});
+
+  final List<String>? images;
+
+  const ProductDetailScreen({super.key, required this.product, this.images});
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+
+  late final List<String> _images =
+      (widget.images == null || widget.images!.isEmpty)
+          ? [widget.product.imageUrl]
+          : widget.images!;
+
   bool get isFavorite =>
       favoriteProductsNotifier.value.any((p) => p.id == widget.product.id);
 
@@ -31,173 +43,255 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final product = widget.product;
-    final inCart =
-        context.select<CartProvider, bool>((cart) => cart.contains(product.id));
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  Widget _buildCarousel(Product product) {
     const radius = BorderRadius.only(
       bottomLeft: Radius.circular(30),
       bottomRight: Radius.circular(30),
     );
 
+    return Stack(
+      children: [
+        Container(
+          height: 340,
+          width: double.infinity,
+          decoration: const BoxDecoration(color: Colors.white, borderRadius: radius),
+          child: ClipRRect(
+            borderRadius: radius,
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: _images.length,
+              onPageChanged: (index) => setState(() => _currentPage = index),
+              itemBuilder: (context, index) {
+                final image = ProductImage(
+                  product: product,
+                  url: _images[index],
+                  fit: BoxFit.contain,
+                  iconSize: 90,
+                );
+                return Padding(
+                  padding: const EdgeInsets.all(24),
+                  // Hero только на первой странице: она "прилетает" из списка
+                  child: index == 0
+                      ? Hero(tag: 'product_image_${product.id}', child: image)
+                      : image,
+                );
+              },
+            ),
+          ),
+        ),
+        Positioned(
+          top: 14,
+          right: 16,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+            decoration: BoxDecoration(
+              color: AppColors.ink.withOpacity(0.75),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              '${_currentPage + 1} / ${_images.length}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDots() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(_images.length, (index) {
+        final active = index == _currentPage;
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          margin: const EdgeInsets.symmetric(horizontal: 3),
+          width: active ? 24 : 8,
+          height: 8,
+          decoration: BoxDecoration(
+            color: active ? AppColors.burgundy : const Color(0xFFD9D2C7),
+            borderRadius: BorderRadius.circular(4),
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget _buildBottomBar(Product product, bool inCart) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x1A000000),
+            blurRadius: 16,
+            offset: Offset(0, -4),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 14, 20, 14),
+          child: Row(
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Price',
+                      style: TextStyle(fontSize: 12, color: AppColors.muted)),
+                  Text(
+                    product.priceLabel,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.burgundy,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: inCart
+                    ? OutlinedButton.icon(
+                        onPressed: () =>
+                            context.read<CartProvider>().toggle(product),
+                        icon: const Icon(Icons.check_rounded),
+                        label: const Text('In Cart · Remove'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.burgundy,
+                          side: const BorderSide(color: AppColors.burgundy),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                      )
+                    : FilledButton.icon(
+                        onPressed: () =>
+                            context.read<CartProvider>().toggle(product),
+                        icon: const Icon(Icons.add_shopping_cart_rounded),
+                        label: const Text('Add to Cart'),
+                        style: FilledButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                      ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final product = widget.product;
+    final inCart =
+        context.select<CartProvider, bool>((cart) => cart.contains(product.id));
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(product.title, style: const TextStyle(fontSize: 16)),
-        actions: const [CartBadgeButton(), SizedBox(width: 6)],
+        title: Text(
+          product.title,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontSize: 16),
+        ),
+        actions: [
+          IconButton(
+            tooltip: 'Share',
+            icon: const Icon(Icons.share_outlined),
+            onPressed: () => showShareSheet(context, product),
+          ),
+          IconButton(
+            tooltip: isFavorite ? 'Remove from favorites' : 'Save to favorites',
+            icon: Icon(isFavorite ? Icons.bookmark : Icons.bookmark_border),
+            color: isFavorite ? AppColors.burgundy : AppColors.ink,
+            onPressed: toggleFavorite,
+          ),
+          const CartBadgeButton(),
+          const SizedBox(width: 6),
+        ],
       ),
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          height: 340,
-                          child: ClipRRect(
-                            borderRadius: radius,
-                            child: ProductImage(product: product, iconSize: 90),
-                          ),
-                        ),
-                        Positioned(
-                          top: 16,
-                          right: 16,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.92),
-                              shape: BoxShape.circle,
-                            ),
-                            child: IconButton(
-                              tooltip: isFavorite
-                                  ? 'Remove from favorites'
-                                  : 'Save to favorites',
-                              icon: Icon(isFavorite
-                                  ? Icons.bookmark
-                                  : Icons.bookmark_border),
-                              color: isFavorite
-                                  ? AppColors.burgundy
-                                  : AppColors.ink,
-                              onPressed: toggleFavorite,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              CategoryTag(text: product.category),
-                              const SizedBox(width: 10),
-                              const Icon(Icons.star_rounded,
-                                  color: Color(0xFFF5A623), size: 20),
-                              const SizedBox(width: 2),
-                              Text(
-                                product.rating,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w700, fontSize: 15),
-                              ),
-                              if (product.isNew) ...[
-                                const SizedBox(width: 10),
-                                const NewBadge(),
-                              ],
-                            ],
-                          ),
-                          const SizedBox(height: 14),
-                          Text(
-                            product.title,
-                            style: const TextStyle(
-                                fontSize: 26, fontWeight: FontWeight.w700),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            product.price,
-                            style: const TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.burgundy,
-                            ),
-                          ),
-                          const SizedBox(height: 18),
-                          Text(
-                            product.description,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.black87,
-                              height: 1.55,
-                            ),
-                          ),
-                          const SizedBox(height: 28),
-                          SizedBox(
-                            width: double.infinity,
-                            child: inCart
-                                ? OutlinedButton.icon(
-                                    onPressed: () => context
-                                        .read<CartProvider>()
-                                        .toggle(product),
-                                    icon: const Icon(Icons.check_rounded),
-                                    label: const Text('In Cart · Tap to remove'),
-                                    style: OutlinedButton.styleFrom(
-                                      foregroundColor: AppColors.burgundy,
-                                      side: const BorderSide(
-                                          color: AppColors.burgundy),
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 14),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(14),
-                                      ),
-                                    ),
-                                  )
-                                : FilledButton.icon(
-                                    onPressed: () => context
-                                        .read<CartProvider>()
-                                        .toggle(product),
-                                    icon: const Icon(
-                                        Icons.add_shopping_cart_rounded),
-                                    label: const Text('Add to Cart'),
-                                    style: FilledButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 14),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(14),
-                                      ),
-                                    ),
-                                  ),
-                          ),
-                          const SizedBox(height: 14),
-                          Center(
-                            child: OutlinedButton.icon(
-                              onPressed: () => Navigator.pop(context),
-                              icon: const Icon(Icons.arrow_back),
-                              label: const Text('Go Back to Feed'),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: AppColors.ink,
-                                side: const BorderSide(color: AppColors.ink),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 12),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+            _buildCarousel(product),
+            const SizedBox(height: 14),
+            _buildDots(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Flexible(child: CategoryTag(text: product.categoryLabel)),
+                      const SizedBox(width: 10),
+                      const Icon(Icons.star_rounded,
+                          color: Color(0xFFF5A623), size: 20),
+                      const SizedBox(width: 2),
+                      Text(
+                        product.ratingLabel,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 15),
                       ),
+                      const SizedBox(width: 4),
+                      Text(
+                        '(${product.reviewCount} reviews)',
+                        style: const TextStyle(
+                            fontSize: 13, color: AppColors.muted),
+                      ),
+                      if (product.isNew) ...[
+                        const SizedBox(width: 10),
+                        const NewBadge(),
+                      ],
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    product.title,
+                    style: const TextStyle(
+                        fontSize: 22, fontWeight: FontWeight.w700, height: 1.25),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Description',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    product.description,
+                    style: const TextStyle(
+                      fontSize: 15.5,
+                      color: Colors.black87,
+                      height: 1.55,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
         ),
       ),
+      // Закреплённая панель: не прокручивается вместе с описанием
+      bottomNavigationBar: _buildBottomBar(product, inCart),
     );
   }
 }

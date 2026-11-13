@@ -94,7 +94,7 @@ class _FeedScreenState extends State<FeedScreen> {
           final product = _products[index];
           return Dismissible(
             key: ValueKey(product.id),
-            direction: DismissDirection.endToStart,
+            direction: DismissDirection.endToStart, // справа налево
             background: const DeleteBackground(),
             onDismissed: (_) => _removeProduct(product),
             child: ProductListTile(
@@ -192,9 +192,7 @@ class _FeedScreenState extends State<FeedScreen> {
           ],
         ),
         actions: [
-          // LW9: корзина с живым бейджем
           const CartBadgeButton(),
-          // Переключатель List <-> Grid
           IconButton(
             tooltip: _isGrid ? 'Show as list' : 'Show as grid',
             onPressed: () => setState(() => _isGrid = !_isGrid),

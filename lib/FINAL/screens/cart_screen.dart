@@ -5,6 +5,7 @@ import '../theme/app_theme.dart';
 import '../widgets/cart_item_tile.dart';
 import '../widgets/empty_state.dart';
 
+/// LW9, Screen 2: корзина — список, удаление по одному, итог, "Clear All".
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 

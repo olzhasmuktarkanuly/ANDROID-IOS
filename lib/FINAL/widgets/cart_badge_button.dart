@@ -4,6 +4,7 @@ import '../../providers/cart_provider.dart';
 import '../screens/cart_screen.dart';
 import '../theme/app_theme.dart';
 
+/// Иконка корзины с живым бейджем в AppBar. Открывает экран корзины.
 class CartBadgeButton extends StatelessWidget {
   const CartBadgeButton({super.key});
 

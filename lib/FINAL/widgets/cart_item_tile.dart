@@ -49,7 +49,7 @@ class CartItemTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  product.category,
+                  product.categoryLabel,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontSize: 12.5, color: AppColors.muted),
@@ -59,7 +59,7 @@ class CartItemTile extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            product.price,
+            product.priceLabel,
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w700,
