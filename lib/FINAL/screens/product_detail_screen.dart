@@ -48,6 +48,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     super.dispose();
   }
 
+
   Widget _buildCarousel(Product product) {
     const radius = BorderRadius.only(
       bottomLeft: Radius.circular(30),
@@ -59,7 +60,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         Container(
           height: 340,
           width: double.infinity,
-          decoration: const BoxDecoration(color: Colors.white, borderRadius: radius),
+          decoration: BoxDecoration(color: Colors.white, borderRadius: radius),
           child: ClipRRect(
             borderRadius: radius,
             child: PageView.builder(
@@ -74,8 +75,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   iconSize: 90,
                 );
                 return Padding(
-                  padding: const EdgeInsets.all(24),
-                  // Hero только на первой странице: она "прилетает" из списка
+                  padding: EdgeInsets.all(24),
                   child: index == 0
                       ? Hero(tag: 'product_image_${product.id}', child: image)
                       : image,
@@ -88,14 +88,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           top: 14,
           right: 16,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
             decoration: BoxDecoration(
               color: AppColors.ink.withOpacity(0.75),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
               '${_currentPage + 1} / ${_images.length}',
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
@@ -113,12 +113,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       children: List.generate(_images.length, (index) {
         final active = index == _currentPage;
         return AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
-          margin: const EdgeInsets.symmetric(horizontal: 3),
+          duration: Duration(milliseconds: 250),
+          margin: EdgeInsets.symmetric(horizontal: 3),
           width: active ? 24 : 8,
           height: 8,
           decoration: BoxDecoration(
-            color: active ? AppColors.burgundy : const Color(0xFFD9D2C7),
+            color: active ? Theme.of(context).colorScheme.primary : Color(0xFFD9D2C7),
             borderRadius: BorderRadius.circular(4),
           ),
         );
@@ -126,10 +126,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
   }
 
+
   Widget _buildBottomBar(Product product, bool inCart) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         boxShadow: [
           BoxShadow(
@@ -142,37 +143,37 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       child: SafeArea(
         top: false,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 14, 20, 14),
+          padding: EdgeInsets.fromLTRB(20, 14, 20, 14),
           child: Row(
             children: [
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Price',
+                  Text('Price',
                       style: TextStyle(fontSize: 12, color: AppColors.muted)),
                   Text(
                     product.priceLabel,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.burgundy,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(width: 20),
+              SizedBox(width: 20),
               Expanded(
                 child: inCart
                     ? OutlinedButton.icon(
                         onPressed: () =>
                             context.read<CartProvider>().toggle(product),
-                        icon: const Icon(Icons.check_rounded),
-                        label: const Text('In Cart · Remove'),
+                        icon: Icon(Icons.check_rounded),
+                        label: Text('In Cart · Remove'),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: AppColors.burgundy,
-                          side: const BorderSide(color: AppColors.burgundy),
-                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          foregroundColor: Theme.of(context).colorScheme.primary,
+                          side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                          padding: EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
@@ -181,10 +182,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     : FilledButton.icon(
                         onPressed: () =>
                             context.read<CartProvider>().toggle(product),
-                        icon: const Icon(Icons.add_shopping_cart_rounded),
-                        label: const Text('Add to Cart'),
+                        icon: Icon(Icons.add_shopping_cart_rounded),
+                        label: Text('Add to Cart'),
                         style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          padding: EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
@@ -210,12 +211,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           product.title,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontSize: 16),
+          style: TextStyle(fontSize: 16),
         ),
         actions: [
           IconButton(
             tooltip: 'Share',
-            icon: const Icon(Icons.share_outlined),
+            icon: Icon(Icons.share_outlined),
             onPressed: () => showShareSheet(context, product),
           ),
           IconButton(
@@ -224,8 +225,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             color: isFavorite ? AppColors.burgundy : AppColors.ink,
             onPressed: toggleFavorite,
           ),
-          const CartBadgeButton(),
-          const SizedBox(width: 6),
+          CartBadgeButton(),
+          SizedBox(width: 6),
         ],
       ),
       body: SingleChildScrollView(
@@ -233,54 +234,53 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildCarousel(product),
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             _buildDots(),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
+              padding: EdgeInsets.fromLTRB(20, 20, 20, 28),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       Flexible(child: CategoryTag(text: product.categoryLabel)),
-                      const SizedBox(width: 10),
-                      const Icon(Icons.star_rounded,
+                      SizedBox(width: 10),
+                      Icon(Icons.star_rounded,
                           color: Color(0xFFF5A623), size: 20),
-                      const SizedBox(width: 2),
+                      SizedBox(width: 2),
                       Text(
                         product.ratingLabel,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 15),
                       ),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4),
                       Text(
                         '(${product.reviewCount} reviews)',
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 13, color: AppColors.muted),
                       ),
                       if (product.isNew) ...[
-                        const SizedBox(width: 10),
-                        const NewBadge(),
+                        SizedBox(width: 10),
+                        NewBadge(),
                       ],
                     ],
                   ),
-                  const SizedBox(height: 14),
+                  SizedBox(height: 14),
                   Text(
                     product.title,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 22, fontWeight: FontWeight.w700, height: 1.25),
                   ),
-                  const SizedBox(height: 16),
-                  const Text(
+                  SizedBox(height: 16),
+                  Text(
                     'Description',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Text(
                     product.description,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 15.5,
-                      color: Colors.black87,
                       height: 1.55,
                     ),
                   ),
@@ -290,7 +290,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           ],
         ),
       ),
-      // Закреплённая панель: не прокручивается вместе с описанием
       bottomNavigationBar: _buildBottomBar(product, inCart),
     );
   }

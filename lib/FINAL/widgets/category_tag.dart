@@ -8,38 +8,37 @@ class CategoryTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+      padding: EdgeInsets.symmetric(horizontal: 9, vertical: 3),
       decoration: BoxDecoration(
-        color: AppColors.burgundySoft,
+        color: Theme.of(context).colorScheme.primary.withOpacity(0.14),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
         text,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 11.5,
           fontWeight: FontWeight.w600,
-          color: AppColors.burgundy,
+          color: Theme.of(context).colorScheme.primary,
         ),
       ),
     );
   }
 }
 
-/// Бейдж NEW для товаров, добавленных через Pull-to-Refresh.
 class NewBadge extends StatelessWidget {
   const NewBadge({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+      padding: EdgeInsets.symmetric(horizontal: 7, vertical: 2),
       decoration: BoxDecoration(
         color: AppColors.gold,
         borderRadius: BorderRadius.circular(6),
       ),
-      child: const Text(
+      child: Text(
         'NEW',
         style: TextStyle(
           fontSize: 10,

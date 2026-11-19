@@ -39,8 +39,20 @@ class Product {
       imageUrl: json['image'] as String? ?? '',
       rating: (ratingMap['rate'] as num?)?.toDouble() ?? 0.0,
       reviewCount: (ratingMap['count'] as num?)?.toInt() ?? 0,
+      isNew: json['isNew'] as bool? ?? false,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'title': title,
+        'price': price,
+        'description': description,
+        'category': category,
+        'image': imageUrl,
+        'rating': {'rate': rating, 'count': reviewCount},
+        'isNew': isNew,
+      };
 
   String get priceLabel => '\$${price.toStringAsFixed(2)}';
 

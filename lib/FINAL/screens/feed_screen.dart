@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../LW11/services/storage_service.dart';
 import '../../models/product.dart';
 import '../../models/product_seed.dart';
 import '../theme/app_theme.dart';
@@ -17,15 +19,28 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
-  final List<Product> _products = buildSeedProducts();
+  late final StorageService _storage;
+  late final List<Product> _products;
   bool _isGrid = false;
 
+  @override
+  void initState() {
+    super.initState();
+    _storage = context.read<StorageService>();
+    _products = _storage.loadProducts(StorageService.keyFeedCatalog) ??
+        buildSeedProducts();
+  }
+
+  void _persist() =>
+      _storage.saveProducts(StorageService.keyFeedCatalog, _products);
+
   Future<void> _onRefresh() async {
-    await Future.delayed(const Duration(milliseconds: 1500));
+    await Future.delayed(Duration(milliseconds: 1500));
     if (!mounted) return;
     setState(() {
       _products.insert(0, ProductFactory.generate());
     });
+    _persist();
   }
 
   void _removeProduct(Product product) {
@@ -35,13 +50,14 @@ class _FeedScreenState extends State<FeedScreen> {
     setState(() {
       _products.removeAt(originalIndex);
     });
+    _persist();
 
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
           content: Text('${product.title} removed'),
-          duration: const Duration(seconds: 4),
+          duration: Duration(seconds: 4),
           action: SnackBarAction(
             label: 'UNDO',
             onPressed: () {
@@ -53,6 +69,7 @@ class _FeedScreenState extends State<FeedScreen> {
               setState(() {
                 _products.insert(index, product);
               });
+              _persist();
             },
           ),
         ),
@@ -66,6 +83,7 @@ class _FeedScreenState extends State<FeedScreen> {
         ..clear()
         ..addAll(buildSeedProducts());
     });
+    _persist();
   }
 
   void _openDetail(Product product) {
@@ -77,15 +95,15 @@ class _FeedScreenState extends State<FeedScreen> {
 
   Widget _buildList() {
     return RefreshIndicator(
-      key: const ValueKey('list-view'),
-      color: AppColors.burgundy,
+      key: ValueKey('list-view'),
+      color: Theme.of(context).colorScheme.primary,
       onRefresh: _onRefresh,
       child: ListView.separated(
         primary: false,
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(bottom: 24),
+        physics: AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.only(bottom: 24),
         itemCount: _products.length,
-        separatorBuilder: (context, index) => const Divider(
+        separatorBuilder: (context, index) => Divider(
           height: 1,
           thickness: 0.6,
           indent: 86,
@@ -95,7 +113,7 @@ class _FeedScreenState extends State<FeedScreen> {
           return Dismissible(
             key: ValueKey(product.id),
             direction: DismissDirection.endToStart, // справа налево
-            background: const DeleteBackground(),
+            background: DeleteBackground(),
             onDismissed: (_) => _removeProduct(product),
             child: ProductListTile(
               product: product,
@@ -109,14 +127,14 @@ class _FeedScreenState extends State<FeedScreen> {
 
   Widget _buildGrid() {
     return RefreshIndicator(
-      key: const ValueKey('grid-view'),
-      color: AppColors.burgundy,
+      key: ValueKey('grid-view'),
+      color: Theme.of(context).colorScheme.primary,
       onRefresh: _onRefresh,
       child: GridView.builder(
         primary: false,
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        physics: AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.fromLTRB(16, 4, 16, 24),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 14,
           crossAxisSpacing: 14,
@@ -145,22 +163,21 @@ class _FeedScreenState extends State<FeedScreen> {
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 4, 20, 12),
+      padding: EdgeInsets.fromLTRB(20, 4, 20, 12),
       child: Row(
         children: [
           Text(
             '${_products.length} fragrances',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w700,
-              color: AppColors.ink,
             ),
           ),
-          const Spacer(),
-          const Icon(Icons.swipe_left_rounded,
+          Spacer(),
+          Icon(Icons.swipe_left_rounded,
               size: 16, color: AppColors.muted),
-          const SizedBox(width: 4),
-          const Flexible(
+          SizedBox(width: 4),
+          Flexible(
             child: Text(
               'Swipe to delete · pull to refresh',
               overflow: TextOverflow.ellipsis,
@@ -178,7 +195,7 @@ class _FeedScreenState extends State<FeedScreen> {
       appBar: AppBar(
         title: Column(
           mainAxisSize: MainAxisSize.min,
-          children: const [
+          children: [
             Text(
               'LUXE PARFUMS',
               style: TextStyle(
@@ -192,12 +209,12 @@ class _FeedScreenState extends State<FeedScreen> {
           ],
         ),
         actions: [
-          const CartBadgeButton(),
+          CartBadgeButton(),
           IconButton(
             tooltip: _isGrid ? 'Show as list' : 'Show as grid',
             onPressed: () => setState(() => _isGrid = !_isGrid),
             icon: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 250),
+              duration: Duration(milliseconds: 250),
               transitionBuilder: (child, animation) =>
                   ScaleTransition(scale: animation, child: child),
               child: Icon(
@@ -206,7 +223,7 @@ class _FeedScreenState extends State<FeedScreen> {
               ),
             ),
           ),
-          const SizedBox(width: 4),
+          SizedBox(width: 4),
         ],
       ),
       body: SafeArea(
@@ -224,7 +241,7 @@ class _FeedScreenState extends State<FeedScreen> {
                   _buildHeader(),
                   Expanded(
                     child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 250),
+                      duration: Duration(milliseconds: 250),
                       child: _isGrid ? _buildGrid() : _buildList(),
                     ),
                   ),

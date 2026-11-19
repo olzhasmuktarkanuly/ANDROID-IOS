@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color ink = Color(0xFF1E1E1E);
   static const Color burgundy = Color(0xFF8B0000);
-  static const Color burgundySoft = Color(0x1A8B0000);
   static const Color gold = Color(0xFFC9A24D);
-  static const Color background = Color(0xFFF7F4EF);
-  static const Color muted = Color(0xFF7A746C);
-  static const Color divider = Color(0xFFEAE4DA);
   static const Color danger = Color(0xFFD32F2F);
+
+  static const Color muted = Color(0xFF8E8880);
 
   static const List<List<Color>> _gradients = [
     [Color(0xFF8B0000), Color(0xFFC0392B)],
@@ -24,24 +22,52 @@ class AppColors {
 }
 
 class AppTheme {
-  static ThemeData get light {
-    final scheme = ColorScheme.fromSeed(
-      seedColor: AppColors.burgundy,
-      brightness: Brightness.light,
-    ).copyWith(primary: AppColors.burgundy);
+  static ThemeData get light => _build(
+        scheme: ColorScheme.fromSeed(
+          seedColor: AppColors.burgundy,
+          brightness: Brightness.light,
+        ).copyWith(
+          primary: AppColors.burgundy,
+          surface: Colors.white,
+        ),
+        background: const Color(0xFFF7F4EF),
+        divider: const Color(0xFFEAE4DA),
+        snackBar: AppColors.ink,
+      );
 
+  static ThemeData get dark => _build(
+        scheme: ColorScheme.fromSeed(
+          seedColor: AppColors.burgundy,
+          brightness: Brightness.dark,
+        ).copyWith(
+          primary: const Color(0xFFE57373),
+          onPrimary: const Color(0xFF2B0000),
+          surface: const Color(0xFF1E1E1E),
+        ),
+        background: const Color(0xFF121212),
+        divider: const Color(0xFF332F2C),
+        snackBar: const Color(0xFF3A3632),
+      );
+
+  static ThemeData _build({
+    required ColorScheme scheme,
+    required Color background,
+    required Color divider,
+    required Color snackBar,
+  }) {
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
-      scaffoldBackgroundColor: AppColors.background,
-      appBarTheme: const AppBarTheme(
-        backgroundColor: AppColors.background,
-        foregroundColor: AppColors.ink,
+      scaffoldBackgroundColor: background,
+      dividerColor: divider,
+      appBarTheme: AppBarTheme(
+        backgroundColor: background,
+        foregroundColor: scheme.onSurface,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: true,
         titleTextStyle: TextStyle(
-          color: AppColors.ink,
+          color: scheme.onSurface,
           fontSize: 20,
           fontWeight: FontWeight.w700,
           letterSpacing: 0.3,
@@ -49,16 +75,16 @@ class AppTheme {
       ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: AppColors.ink,
+        backgroundColor: snackBar,
         contentTextStyle: const TextStyle(color: Colors.white, fontSize: 14),
         actionTextColor: AppColors.gold,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
-      navigationBarTheme: const NavigationBarThemeData(
-        backgroundColor: Colors.white,
-        indicatorColor: AppColors.burgundySoft,
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: scheme.surface,
+        indicatorColor: scheme.primary.withOpacity(0.18),
       ),
-      dividerTheme: const DividerThemeData(color: AppColors.divider),
+      dividerTheme: DividerThemeData(color: divider),
     );
   }
 }

@@ -5,7 +5,6 @@ import '../theme/app_theme.dart';
 import '../widgets/cart_item_tile.dart';
 import '../widgets/empty_state.dart';
 
-/// LW9, Screen 2: корзина — список, удаление по одному, итог, "Clear All".
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
@@ -15,7 +14,7 @@ class CartScreen extends StatelessWidget {
     final items = cart.items;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('My Cart')),
+      appBar: AppBar(title: Text('My Cart')),
       body: items.isEmpty
           ? EmptyState(
               icon: Icons.shopping_bag_outlined,
@@ -29,10 +28,10 @@ class CartScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                    padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
                     itemCount: items.length,
                     separatorBuilder: (context, index) =>
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10),
                     itemBuilder: (context, index) =>
                         CartItemTile(product: items[index]),
                   ),
@@ -62,8 +61,8 @@ class _SummaryBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         boxShadow: [
           BoxShadow(
@@ -76,7 +75,7 @@ class _SummaryBar extends StatelessWidget {
       child: SafeArea(
         top: false,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
+          padding: EdgeInsets.fromLTRB(20, 18, 20, 16),
           child: Row(
             children: [
               Expanded(
@@ -85,16 +84,16 @@ class _SummaryBar extends StatelessWidget {
                   children: [
                     Text(
                       'Total · $itemCount ${itemCount == 1 ? 'item' : 'items'}',
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: 13, color: AppColors.muted),
                     ),
-                    const SizedBox(height: 2),
+                    SizedBox(height: 2),
                     Text(
                       '\$${total.toStringAsFixed(2)}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.burgundy,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ],
@@ -102,13 +101,13 @@ class _SummaryBar extends StatelessWidget {
               ),
               OutlinedButton.icon(
                 onPressed: onClear,
-                icon: const Icon(Icons.delete_sweep_rounded),
-                label: const Text('Clear All'),
+                icon: Icon(Icons.delete_sweep_rounded),
+                label: Text('Clear All'),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.danger,
-                  side: const BorderSide(color: AppColors.danger),
+                  side: BorderSide(color: AppColors.danger),
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                      EdgeInsets.symmetric(horizontal: 18, vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),

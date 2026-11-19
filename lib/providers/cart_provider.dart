@@ -1,8 +1,13 @@
 import 'package:flutter/foundation.dart';
+import '../LW11/services/storage_service.dart';
 import '../models/product.dart';
 
 class CartProvider extends ChangeNotifier {
-  final List<Product> _items = [];
+  final StorageService _storage;
+  final List<Product> _items;
+
+  CartProvider(this._storage)
+      : _items = _storage.loadProducts(StorageService.keyCart) ?? [];
 
   List<Product> get items => List.unmodifiable(_items);
 
@@ -13,15 +18,19 @@ class CartProvider extends ChangeNotifier {
 
   bool contains(String id) => _items.any((p) => p.id == id);
 
+  void _persist() => _storage.saveProducts(StorageService.keyCart, _items);
+
   void add(Product product) {
     if (contains(product.id)) return;
     _items.add(product);
     notifyListeners();
+    _persist();
   }
 
   void remove(String id) {
     _items.removeWhere((p) => p.id == id);
     notifyListeners();
+    _persist();
   }
 
   void toggle(Product product) {
@@ -36,5 +45,6 @@ class CartProvider extends ChangeNotifier {
     if (_items.isEmpty) return;
     _items.clear();
     notifyListeners();
+    _persist();
   }
 }

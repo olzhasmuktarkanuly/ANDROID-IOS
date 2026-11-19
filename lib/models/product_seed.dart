@@ -1,8 +1,10 @@
 import 'product.dart';
 
+/// Начальные данные каталога (seed data). Используются при старте
+/// и по кнопке "Reset Catalog".
 List<Product> buildSeedProducts() => [
       Product(
-        id: '1',
+        id: 'seed_1',
         title: 'Tom Ford Oud Wood',
         category: 'Eau de Parfum',
         price: 395.00,
@@ -13,7 +15,7 @@ List<Product> buildSeedProducts() => [
             'A rare, exotic, and distinctive fragrance featuring classic woods and the iconic Tom Ford oud. Features rich notes of rose wood and cardamom.',
       ),
       Product(
-        id: '2',
+        id: 'seed_2',
         title: 'Baccarat Rouge 540',
         category: 'Extrait de Parfum',
         price: 425.00,
@@ -24,7 +26,7 @@ List<Product> buildSeedProducts() => [
             'Luminous and sophisticated, Baccarat Rouge 540 lays on the skin like an amber floral and woody breeze.',
       ),
       Product(
-        id: '3',
+        id: 'seed_3',
         title: 'Creed Aventus',
         category: 'Eau de Parfum',
         price: 365.00,
@@ -35,7 +37,7 @@ List<Product> buildSeedProducts() => [
             'Sensual, audacious and contemporary, this rich and iconic Eau de Parfum combines tantalizing fruity head notes with a woody base.',
       ),
       Product(
-        id: '4',
+        id: 'seed_4',
         title: 'Chanel Coco Mademoiselle',
         category: 'Eau de Parfum',
         price: 150.00,
@@ -45,7 +47,7 @@ List<Product> buildSeedProducts() => [
             'An oriental, fresh and sensual fragrance with notes of orange, jasmine, rose and patchouli.',
       ),
       Product(
-        id: '5',
+        id: 'seed_5',
         title: 'YSL Black Opium',
         category: 'Eau de Parfum',
         price: 135.00,
@@ -55,7 +57,7 @@ List<Product> buildSeedProducts() => [
             'An addictive gourmand floral with black coffee, white flowers and a sweet vanilla trail.',
       ),
       Product(
-        id: '6',
+        id: 'seed_6',
         title: "Hermès Terre d'Hermès",
         category: 'Eau de Toilette',
         price: 120.00,
@@ -65,7 +67,7 @@ List<Product> buildSeedProducts() => [
             'A mineral woody fragrance built around orange, flint and vetiver. Earthy, bold and timeless.',
       ),
       Product(
-        id: '7',
+        id: 'seed_7',
         title: 'MFK Grand Soir',
         category: 'Eau de Parfum',
         price: 310.00,
@@ -75,7 +77,7 @@ List<Product> buildSeedProducts() => [
             'A warm amber evening fragrance with benzoin, labdanum and tonka bean.',
       ),
       Product(
-        id: '8',
+        id: 'seed_8',
         title: 'Guerlain Shalimar',
         category: 'Parfum',
         price: 180.00,
@@ -85,7 +87,7 @@ List<Product> buildSeedProducts() => [
             'The legendary oriental: bergamot, iris, vanilla and a smoky, sensual dry-down.',
       ),
       Product(
-        id: '9',
+        id: 'seed_9',
         title: "Dior J'adore",
         category: 'Eau de Parfum',
         price: 145.00,
@@ -95,7 +97,7 @@ List<Product> buildSeedProducts() => [
             'A luminous floral bouquet of ylang-ylang, damascus rose and jasmine.',
       ),
       Product(
-        id: '10',
+        id: 'seed_10',
         title: 'Armani Acqua di Giò Profumo',
         category: 'Parfum',
         price: 125.00,
@@ -124,7 +126,7 @@ class ProductFactory {
     final t = _templates[_counter % _templates.length];
     _counter++;
     return Product(
-      id: 'new_$_counter',
+      id: 'new_${DateTime.now().microsecondsSinceEpoch}',
       title: t[0],
       category: t[1],
       price: double.parse(t[2].replaceAll('\$', '')),

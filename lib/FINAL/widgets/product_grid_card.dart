@@ -15,9 +15,9 @@ class ProductGridCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
             color: Color(0x14000000),
             blurRadius: 12,
@@ -28,7 +28,7 @@ class ProductGridCard extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Material(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           child: InkWell(
             onTap: onTap,
             child: Column(
@@ -40,12 +40,12 @@ class ProductGridCard extends StatelessWidget {
                     children: [
                       ProductImage(product: product),
                       if (product.isNew)
-                        const Positioned(top: 10, left: 10, child: NewBadge()),
+                        Positioned(top: 10, left: 10, child: NewBadge()),
                       Positioned(
                         top: 10,
                         right: 10,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                               horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.92),
@@ -54,12 +54,12 @@ class ProductGridCard extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(Icons.star_rounded,
+                              Icon(Icons.star_rounded,
                                   color: Color(0xFFF5A623), size: 15),
-                              const SizedBox(width: 2),
+                              SizedBox(width: 2),
                               Text(
                                 product.ratingLabel,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.w700),
                               ),
                             ],
@@ -70,7 +70,7 @@ class ProductGridCard extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+                  padding: EdgeInsets.fromLTRB(12, 10, 12, 12),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,15 +79,15 @@ class ProductGridCard extends StatelessWidget {
                         product.title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14.5,
                           fontWeight: FontWeight.w700,
                           color: AppColors.ink,
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      SizedBox(height: 6),
                       CategoryTag(text: product.categoryLabel),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       Row(
                         children: [
                           Expanded(
@@ -95,10 +95,10 @@ class ProductGridCard extends StatelessWidget {
                               product.priceLabel,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
-                                color: AppColors.burgundy,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
                           ),

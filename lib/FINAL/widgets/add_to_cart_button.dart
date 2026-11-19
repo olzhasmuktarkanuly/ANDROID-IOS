@@ -4,7 +4,6 @@ import '../../models/product.dart';
 import '../../providers/cart_provider.dart';
 import '../theme/app_theme.dart';
 
-/// Компактная круглая кнопка-переключатель "Add to Cart" (иконка корзина <-> галочка).
 class AddToCartButton extends StatelessWidget {
   final Product product;
   final double size;
@@ -19,21 +18,21 @@ class AddToCartButton extends StatelessWidget {
     return Tooltip(
       message: inCart ? 'Remove from cart' : 'Add to cart',
       child: Material(
-        color: inCart ? AppColors.burgundy : AppColors.burgundySoft,
-        shape: const CircleBorder(),
+        color: inCart ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.primary.withOpacity(0.14),
+        shape: CircleBorder(),
         child: InkWell(
-          customBorder: const CircleBorder(),
+          customBorder: CircleBorder(),
           onTap: () => context.read<CartProvider>().toggle(product),
           child: SizedBox(
             width: size,
             height: size,
             child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
+              duration: Duration(milliseconds: 200),
               child: Icon(
                 inCart ? Icons.check_rounded : Icons.add_shopping_cart_rounded,
                 key: ValueKey(inCart),
                 size: size * 0.55,
-                color: inCart ? Colors.white : AppColors.burgundy,
+                color: inCart ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.primary,
               ),
             ),
           ),

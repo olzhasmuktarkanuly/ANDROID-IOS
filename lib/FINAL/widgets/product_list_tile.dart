@@ -13,11 +13,11 @@ class ProductListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.surface,
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
             children: [
               Container(
@@ -31,10 +31,10 @@ class ProductListTile extends StatelessWidget {
                     colors: AppColors.gradientFor(product.id),
                   ),
                 ),
-                child: const Icon(Icons.local_florist_rounded,
+                child: Icon(Icons.local_florist_rounded,
                     color: Colors.white, size: 26),
               ),
-              const SizedBox(width: 14),
+              SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,53 +46,52 @@ class ProductListTile extends StatelessWidget {
                             product.title,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
-                              color: AppColors.ink,
                             ),
                           ),
                         ),
                         if (product.isNew) ...[
-                          const SizedBox(width: 8),
-                          const NewBadge(),
+                          SizedBox(width: 8),
+                          NewBadge(),
                         ],
                       ],
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6),
                     CategoryTag(text: product.categoryLabel),
                   ],
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
                     product.priceLabel,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.burgundy,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  SizedBox(height: 6),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.star_rounded,
+                      Icon(Icons.star_rounded,
                           color: Color(0xFFF5A623), size: 18),
-                      const SizedBox(width: 2),
+                      SizedBox(width: 2),
                       Text(
                         product.ratingLabel,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 13, fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
                 ],
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: 10),
               AddToCartButton(product: product),
             ],
           ),

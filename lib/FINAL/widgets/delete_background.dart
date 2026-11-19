@@ -15,7 +15,7 @@ class DeleteBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerRight,
-      padding: const EdgeInsets.only(right: 24),
+      padding: EdgeInsets.only(right: 24),
       decoration: BoxDecoration(
         color: AppColors.danger,
         borderRadius: borderRadius,
@@ -24,7 +24,7 @@ class DeleteBackground extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (showLabel) ...[
-            const Text(
+            Text(
               'Delete',
               style: TextStyle(
                 color: Colors.white,
@@ -32,9 +32,9 @@ class DeleteBackground extends StatelessWidget {
                 fontSize: 15,
               ),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8),
           ],
-          const Icon(Icons.delete, color: Colors.white, size: 28),
+          Icon(Icons.delete, color: Colors.white, size: 28),
         ],
       ),
     );
